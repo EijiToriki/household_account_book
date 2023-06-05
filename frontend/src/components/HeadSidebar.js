@@ -11,7 +11,7 @@ import Badge from '@mui/material/Badge';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
+import { mainListItems, secondaryListItems } from './data/listItems';
 
 const drawerWidth = 240;
 
@@ -91,11 +91,12 @@ export default function HeadSidebar() {
             color="inherit"
             noWrap
             sx={{ flexGrow: 1 }}
+            textAlign="center"
           >
             支出管理アプリ
           </Typography>
           <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
+            <Badge badgeContent={0} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
