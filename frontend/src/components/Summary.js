@@ -2,13 +2,9 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
-
 import Chart from './subcomponents/Chart';
 import Deposits from './subcomponents/Deposits';
 import Orders from './subcomponents/Orders';
-
-
-
 
 export default function Summary() {
   return (

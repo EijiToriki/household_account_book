@@ -2,8 +2,8 @@ import React from 'react'
 
 export default function OutcomeRegistration() {
   return (
-    <div>
+    <React.Fragment>
         OutcomeRegistration
-    </div>
+    </React.Fragment>
   )
 }

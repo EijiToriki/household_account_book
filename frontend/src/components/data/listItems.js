@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import Link from '@mui/material/Link';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -15,7 +15,7 @@ export const mainListItems = (
       View
     </ListSubheader>
 
-    <Link to="/">
+    <Link href="/" underline='none' color='black'>
       <ListItemButton>
         <ListItemIcon>
           <DashboardIcon />
@@ -24,7 +24,7 @@ export const mainListItems = (
       </ListItemButton>
     </Link>
 
-    <Link to="month">
+    <Link href="month" underline='none' color='black'>
       <ListItemButton>
         <ListItemIcon>
           <Brightness2Icon />
@@ -33,7 +33,7 @@ export const mainListItems = (
       </ListItemButton>
     </Link>
 
-    <Link to="daily">
+    <Link href="daily" underline='none' color='black'>
       <ListItemButton>
         <ListItemIcon>
           <Brightness5Icon />
@@ -49,7 +49,7 @@ export const secondaryListItems = (
     <ListSubheader component="div" inset>
       Registration
     </ListSubheader>
-    <Link to="income">
+    <Link href="income" underline='none' color='black'>
       <ListItemButton>
         <ListItemIcon>
           <AssignmentIcon />
@@ -58,7 +58,7 @@ export const secondaryListItems = (
       </ListItemButton>
     </Link>
 
-    <Link to="outcome">
+    <Link href="outcome" underline='none' color='black'>
       <ListItemButton>
         <ListItemIcon>
           <AssignmentIcon />
