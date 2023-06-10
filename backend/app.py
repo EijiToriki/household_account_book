@@ -1,5 +1,6 @@
-from flask import Flask, jsonify
+from flask import Flask, request
 from flask_cors import CORS
+from db_insert import insert_income
 
 app = Flask(__name__)
 CORS(app)
@@ -12,6 +13,12 @@ def after_request(response):
   return response
 
 
+@app.route("/incomeRegister", methods=['GET', 'POST'])
+def income_register():
+   data = request.get_json()
+   insert_income(data)
+
+   return data
 
 
 

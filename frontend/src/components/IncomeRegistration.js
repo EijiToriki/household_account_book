@@ -4,8 +4,11 @@ import Grid from '@mui/material/Grid';
 
 import Details from './subcomponents/Details';
 import DetailOpButton from './subcomponents/DetailOpButton';
+import { useNavigate } from 'react-router-dom';
 
 export default function IncomeRegistration() {
+  const navigate = useNavigate()
+
   const handleAddDetails = () => {
     setDetails([
       ...details, {
@@ -16,15 +19,16 @@ export default function IncomeRegistration() {
       }])
   }
 
-  const handleRegisterDetails = async(e) => {
-    // let baseURL = "http://127.0.0.1:5000/incomeRegister"
-    // // JSON.stringify(details)
-    // try{
-    //   const res = await axios.post(baseURL, JSON.stringify(details))
-    //   console.log(res.data)
-    // }catch(error){
-    //   console.log(error)
-    // } 
+  const handleRegisterDetails = () => {
+    let baseURL = "http://127.0.0.1:5000/incomeRegister"
+    details.map((detail) => {
+      try{
+        axios.post(baseURL, detail)
+      }catch(error){
+        console.log(error)
+      } 
+    })
+    navigate('/')
   }
 
   const handleRemoveDetails = () => {

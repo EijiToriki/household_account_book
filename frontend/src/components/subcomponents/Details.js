@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import { DatePicker } from '@mui/x-date-pickers'
 import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 
 import Title from './Title'
 
+
 export default function Details({formChar, detailCount, data}) {
+  const [update, setUpdate] = useState(false)   // 再レンダリング用(select box が再レンダリングされない)
+
   const handleChangeDate = (date) => {
     data.registerDate = String(date.$y) + '/' + String(date.$M + 1) + '/' + String(date.$D)
   }
@@ -13,6 +17,7 @@ export default function Details({formChar, detailCount, data}) {
   }
   const handleChangeCategory = (e) => {
     data.category = e.target.value
+    setUpdate(update ? false : true)
   }
   const handleChangeComment = (e) => {
     data.comment = e.target.value
