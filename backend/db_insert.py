@@ -16,6 +16,8 @@ def insert_XXcome(data, type):
   table_name = type + "come"
   table_date_name = type + "_date"
 
+  data["registerDate"] = arrange_time_format(data["registerDate"])
+
   ## データ挿入
   cur.execute(
       'insert into ' + table_name + '(user_id, ' + table_date_name + ', money, category_id, comment) values(1, :' + table_date_name + ', :money, :category_id, :comment)'
@@ -29,3 +31,19 @@ def insert_XXcome(data, type):
 
   conn.commit()
   conn.close
+
+
+def arrange_time_format(date):
+  print(date)
+  date = date.split('/')
+
+  if len(date[1]) == 1:
+    date[1] = '0' + date[1]
+  if len(date[2]) == 1:
+    date[2] = '0' + date[2]
+  
+  return '-'.join(date)
+
+
+if __name__ == '__main__':
+  print(arrange_time_format('2023/6/5'))

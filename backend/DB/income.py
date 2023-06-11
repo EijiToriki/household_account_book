@@ -10,6 +10,11 @@ conn = sqlite3.connect(dbname)
 ## sqliteを操作するカーソルオブジェクトを作成
 cur = conn.cursor()
 
+## テーブル削除
+cur.execute(
+    'drop table income'
+)
+
 ## テーブル作成
 cur.execute("PRAGMA foreign_keys = true")
 cur.execute(
