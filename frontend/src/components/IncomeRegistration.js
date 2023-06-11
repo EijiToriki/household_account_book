@@ -52,7 +52,7 @@ export default function IncomeRegistration() {
       <Grid container spacing={3}>
         {details.map((data, idx) => (
           <Grid item xs={6} key={idx}>
-            <Details formChar={formChar} detailCount={idx+1} data={data}/>
+            <Details formChar={formChar} detailCount={idx+1} data={data} type={0}/>
           </Grid>
         ))} 
       </Grid>

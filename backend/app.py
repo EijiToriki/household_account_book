@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS
-from db_insert import insert_income
+from db_insert import insert_XXcome
 
 app = Flask(__name__)
 CORS(app)
@@ -16,10 +16,17 @@ def after_request(response):
 @app.route("/incomeRegister", methods=['GET', 'POST'])
 def income_register():
    data = request.get_json()
-   insert_income(data)
+   insert_XXcome(data, 'in')
 
    return data
 
+
+@app.route("/outcomeRegister", methods=['GET', 'POST'])
+def outcome_register():
+   data = request.get_json()
+   insert_XXcome(data, 'out')
+
+   return data
 
 
 if __name__ == '__main__':

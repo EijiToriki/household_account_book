@@ -8,22 +8,19 @@ def connect_db():
   return conn
 
 
-def insert_income(data):
+def insert_XXcome(data, type):
   conn = connect_db()
   ## sqliteを操作するカーソルオブジェクトを作成
   cur = conn.cursor()
 
-  print(cur.execute("select name from sqlite_master where type='table';").fetchall())
+  table_name = type + "come"
+  table_date_name = type + "_date"
 
-  ## テーブル作成
+  ## データ挿入
   cur.execute(
-      '''
-      insert into 
-      income(user_id, in_date, money, category_id, comment)
-      values(1, :in_date, :money, :category_id, :comment)
-      '''
+      'insert into ' + table_name + '(user_id, ' + table_date_name + ', money, category_id, comment) values(1, :' + table_date_name + ', :money, :category_id, :comment)'
       , {
-          "in_date": data["registerDate"], 
+          table_date_name: data["registerDate"], 
           "money": data["money"], 
           "category_id": data["category"], 
           "comment": data["comment"]
