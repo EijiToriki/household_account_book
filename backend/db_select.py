@@ -10,7 +10,8 @@ def connect_db():
 
 # yearで与えた年の収入・支出額の合計値を出力する
 ## type : 'in' or 'out'
-def select_year_income(year, type):
+## bop = balance of payments = 収支
+def select_year_bop(year, type):
   conn = connect_db()
   ## sqliteを操作するカーソルオブジェクトを作成
   cur = conn.cursor()
@@ -26,9 +27,9 @@ def select_year_income(year, type):
   return res[0][0]
 
 
-# yearで与えた年の収入・支出額の合計値を出力する（※ 6月の場合は '06' を渡す)
+# monthで与えた月の収入・支出額の合計値を出力する（※ 6月の場合は '06' を渡す)
 ## type : 'in' or 'out'
-def select_month_income(month, type):
+def select_month_bop(month, type):
   conn = connect_db()
   ## sqliteを操作するカーソルオブジェクトを作成
   cur = conn.cursor()
@@ -44,6 +45,25 @@ def select_month_income(month, type):
   return res[0][0]
 
 
+# monthで与えた月におけるカテゴリごとの支出額の合計値を出力する
+# （※ 6月の場合は '06' を渡す)
+def select_month_outcome(month):
+  conn = connect_db()
+  ## sqliteを操作するカーソルオブジェクトを作成
+  cur = conn.cursor()
+
+  ## データ抽出
+  res = cur.execute(
+    "select category_id, sum(money) from outcome where strftime('%m', out_date) = '"+ month + "' group by category_id order by category_id"
+  ).fetchall()
+
+  conn.commit()
+  conn.close
+
+  return res
+
+
 if __name__ == '__main__':
-  print(select_year_income('2023', 'in'))
-  print(select_month_income('06', 'in'))
+  # print(select_year_bop('2023', 'in'))
+  # print(select_month_bop('06', 'in'))
+  print(select_month_outcome('06'))
