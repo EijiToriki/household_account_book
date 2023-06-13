@@ -2,15 +2,15 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
-import Chart from './subcomponents/Chart';
-import Deposits from './subcomponents/Deposits';
 import Orders from './subcomponents/Orders';
+import YearAccount from './subcomponents/YearAccount';
+import MonthAccount from './subcomponents/MonthAccount';
 
 export default function Summary() {
   return (
     <Grid container spacing={3}>
       {/* Chart */}
-      <Grid item xs={12} md={8} lg={9}>
+      <Grid item md={6}>
         <Paper
           sx={{
             p: 2,
@@ -19,11 +19,11 @@ export default function Summary() {
             height: 240,
           }}
         >
-          <Chart />
+          <YearAccount />
         </Paper>
       </Grid>
       {/* Recent Deposits */}
-      <Grid item xs={12} md={4} lg={3}>
+      <Grid item md={6}>
         <Paper
           sx={{
             p: 2,
@@ -32,11 +32,11 @@ export default function Summary() {
             height: 240,
           }}
         >
-          <Deposits />
+          <MonthAccount />
         </Paper>
       </Grid>
       {/* Recent Orders */}
-      <Grid item xs={12}>
+      <Grid item md={12}>
         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
           <Orders />
         </Paper>
