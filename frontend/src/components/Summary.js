@@ -2,14 +2,30 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
-import Orders from './subcomponents/Orders';
 import YearAccount from './subcomponents/YearAccount';
 import MonthAccount from './subcomponents/MonthAccount';
+import MonthDetail from './subcomponents/MonthDetail';
+import axios from 'axios';
 
+const baseURL = "http://127.0.0.1:5000/summaryGetter"
 export default function Summary() {
+  const [summaryData, setSummaryData] = React.useState({
+    'month': [0, 0],
+    'year': [0, 0]
+  })
+  React.useEffect(() => {
+    async function fetchSummary(){
+      const res = await axios.get(baseURL)
+      setSummaryData(res.data)
+    }
+    fetchSummary()
+  }, [])
+
+  console.log(summaryData.month[0])
+  
   return (
     <Grid container spacing={3}>
-      {/* Chart */}
+      {/* 年度支出 */}
       <Grid item md={6}>
         <Paper
           sx={{
@@ -19,10 +35,10 @@ export default function Summary() {
             height: 240,
           }}
         >
-          <YearAccount />
+          <YearAccount income={summaryData.year[0]} outcome={summaryData.year[1]} />
         </Paper>
       </Grid>
-      {/* Recent Deposits */}
+      {/* 月支出 */}
       <Grid item md={6}>
         <Paper
           sx={{
@@ -32,13 +48,13 @@ export default function Summary() {
             height: 240,
           }}
         >
-          <MonthAccount />
+          <MonthAccount income={summaryData.month[0]} outcome={summaryData.month[1]} />
         </Paper>
       </Grid>
-      {/* Recent Orders */}
+      {/* 目標との差額 */}
       <Grid item md={12}>
         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-          <Orders />
+          <MonthDetail />
         </Paper>
       </Grid>
     </Grid> 

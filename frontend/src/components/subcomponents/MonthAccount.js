@@ -2,7 +2,7 @@ import React from 'react'
 import Title from './Title'
 import { Grid, Typography } from '@mui/material'
 
-export default function MonthAccount() {
+export default function MonthAccount({income, outcome}) {
   return (
     <>
       <Title>6月 収支</Title>
@@ -14,7 +14,7 @@ export default function MonthAccount() {
         </Grid>
         <Grid item md={6}>
           <Typography fontSize={20}>
-            1000000円
+            {income}円
           </Typography>
         </Grid>
       </Grid>
@@ -26,19 +26,19 @@ export default function MonthAccount() {
         </Grid>
         <Grid item md={6}>
           <Typography fontSize={20}>
-            1200000円
+            {outcome}円
           </Typography>
         </Grid>
       </Grid>
       <Grid container spacing={3} mt={1} textAlign='center'>
         <Grid item md={12}>
-          {100000 - 120000 > 0 ?
+          {income - outcome > 0 ?
             <Typography fontSize={24} color='green'>
-              200000円黒字
+              {income - outcome}円黒字
             </Typography>
             :
             <Typography fontSize={24} color='error'>
-              200000円赤字
+              {outcome - income}円赤字
             </Typography>
           }
         </Grid>
