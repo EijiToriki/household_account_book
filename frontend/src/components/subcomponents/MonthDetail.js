@@ -8,39 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 import { Typography } from '@mui/material';
 
-// ハードコーディング（本当はバックから持ってくる）
-function createData(id, category, payment, budget) {
-  return { id, category, payment, budget };
-}
-
-const rows = [
-  createData(
-    0,
-    '家賃',
-    69300,
-    70000
-  ),
-  createData(
-    1,
-    '食費',
-    30000,
-    35000
-  ),
-  createData(
-    2,
-    '趣味',
-    12000,
-    10000
-  ),
-  createData(
-    3,
-    '遊び',
-    18000,
-    20000
-  )
-];
-
-export default function MonthDetail() {
+export default function MonthDetail({budgetData}) {
   return (
     <React.Fragment>
       <Title>6月 カテゴリ別支出</Title>
@@ -54,22 +22,22 @@ export default function MonthDetail() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell><Typography>{row.category}</Typography></TableCell>
-              <TableCell align="right"><Typography>{`${row.payment}円`}</Typography></TableCell>
-              <TableCell align="right"><Typography>{`${row.budget}円`}</Typography></TableCell>
+          {budgetData.map((data, idx) => (
+            <TableRow key={idx}>
+              <TableCell><Typography>{data[0]}</Typography></TableCell>
+              <TableCell align="right"><Typography>{`${data[1]}円`}</Typography></TableCell>
+              <TableCell align="right"><Typography>{`${data[2]}円`}</Typography></TableCell>
               {
-                row.budget - row.payment > 0 ?
+                data[2] - data[1] > 0 ?
                 <TableCell align="right">
                   <Typography color='green'>
-                    {`${row.budget - row.payment}円 余裕`}
+                    {`${data[2] - data[1]}円 余裕`}
                   </Typography>
                 </TableCell>
                 :
                 <TableCell align="right">
                   <Typography color='error'>
-                    {`${row.payment - row.budget}円 超過`}
+                    {`${data[1] - data[2]}円 超過`}
                   </Typography>
                 </TableCell>
               }
