@@ -37,7 +37,7 @@ cur.execute("insert into category(id, flag, name) values (8, 1, '電気')")
 cur.execute("insert into category(id, flag, name) values (9, 1, 'ガス')")
 cur.execute("insert into category(id, flag, name) values (10, 1, '水道')")
 cur.execute("insert into category(id, flag, name) values (11, 1, 'ジム')")
-cur.execute("insert into category(id, flag, name) values (12, 1, '投資(NISA・株など)')")
+cur.execute("insert into category(id, flag, name) values (12, 1, '投資信託')")
 cur.execute("insert into category(id, flag, name) values (13, 1, 'その他')")
 
 conn.commit()

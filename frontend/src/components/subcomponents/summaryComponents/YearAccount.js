@@ -1,5 +1,5 @@
 import React from 'react'
-import Title from './Title'
+import Title from '../Title'
 import { Grid, Typography } from '@mui/material'
 
 export default function YearAccount({income, outcome}) {

@@ -2,9 +2,9 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
-import YearAccount from './subcomponents/YearAccount';
-import MonthAccount from './subcomponents/MonthAccount';
-import MonthDetail from './subcomponents/MonthDetail';
+import YearAccount from './subcomponents/summaryComponents/YearAccount';
+import MonthAccount from './subcomponents/summaryComponents/MonthAccount';
+import MonthDetail from './subcomponents/summaryComponents/MonthDetail';
 import axios from 'axios';
 
 const baseURL = "http://127.0.0.1:5000/summaryGetter"
