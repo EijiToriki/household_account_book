@@ -37,7 +37,7 @@ def get_summary():
    summary_data['month'] = month_data
 
    ## その月のカテゴリ別の収支
-   out = select_month_outcome('06', 1)
+   out = select_month_outcome(month, 1)
    bud = select_budget_by_user(1)
    category = select_category_all()
 
