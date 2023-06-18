@@ -4,7 +4,7 @@ from collections import defaultdict
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from db_insert import insert_XXcome
-from db_select import select_year_bop, select_month_bop, select_month_outcome, select_budget_by_user, select_category_all
+from db_select import select_year_bop, select_month_bop, select_month_outcome, select_budget_by_user, select_category_all, select_out_day_category, select_out_sum_category
 
 app = Flask(__name__)
 CORS(app)
@@ -58,6 +58,55 @@ def get_summary():
    
    return jsonify(summary_data)
 
+
+@app.route("/dailyGetter")
+def get_daily():
+   daily_data = defaultdict(list)
+   month = str(now.month).zfill(2)
+   
+   out = select_month_outcome(month, 1)
+   category = select_category_all()
+
+   blank_category = []
+   out_category = set([o[0] for o in out])
+
+   for i in range(len(category)):
+      if i+1 not in out_category:
+         blank_category.append(i+1)
+
+   for bc in blank_category:
+      out.insert(bc-1, (bc, 0))
+
+   budget_summary = []
+   for i in range(len(category)):
+      budget_summary.append([category[i][0], out[i][1]])
+
+   ## 固定費
+   fixed_response = []
+   fixed_ids = [0, 7, 8, 9, 10, 11]
+   for cid in fixed_ids:
+      res = select_out_sum_category(month, cid+1, 1)
+      if res[0][0]:
+         fixed_response.append((category[cid][0], res[0][0]))
+      else:
+         fixed_response.append((category[cid][0], 0))
+
+   daily_data['fixed'] = fixed_response
+
+   ## 変動費
+   variable_response = []
+   variable_ids = [1, 2, 3, 4, 5, 6, 12]
+   for cid in variable_ids:
+      res = select_out_sum_category(month, cid+1, 1)
+      day_res = select_out_day_category(now.month, cid+1, 1)
+      if res[0][0]:
+         variable_response.append((category[cid][0], res[0][0], day_res))
+      else:
+         variable_response.append((category[cid][0], 0, day_res))
+
+   daily_data['variable'] = variable_response
+
+   return jsonify(daily_data)
 
 
 @app.route("/incomeRegister", methods=['GET', 'POST'])

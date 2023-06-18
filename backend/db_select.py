@@ -170,7 +170,7 @@ if __name__ == '__main__':
   fixed_ids = [0, 7, 8, 9, 10, 11]
   for cid in fixed_ids:
     res = select_out_sum_category('06', cid+1, 1)
-    if res:
+    if res[0][0] != 'null':
       fixed_response.append((category[cid][0], res[0][0]))
     else:
       fixed_response.append((category[cid][0], 0))

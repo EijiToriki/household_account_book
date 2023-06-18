@@ -1,11 +1,12 @@
 import * as React from 'react';
+import axios from 'axios';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
 import YearAccount from './subcomponents/summaryComponents/YearAccount';
 import MonthAccount from './subcomponents/summaryComponents/MonthAccount';
 import MonthDetail from './subcomponents/summaryComponents/MonthDetail';
-import axios from 'axios';
+
 
 const baseURL = "http://127.0.0.1:5000/summaryGetter"
 export default function Summary() {
