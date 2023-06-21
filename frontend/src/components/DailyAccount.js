@@ -16,19 +16,26 @@ export default function DailyAccount() {
 
   React.useEffect(() => {
     async function fetchSummary(){
-      const res = await axios.get(baseURL)
-      setDailyData(res.data)
-      setIsLoad(true)
+      try{
+        const res = await axios.post(baseURL, {
+          m : month,
+          y : year
+        })
+        setDailyData(res.data)
+        setIsLoad(true)  
+      }catch(error){
+        console.log(error)
+      } 
     }
     fetchSummary()
-  }, [])
+  }, [month])
   return (
     <>
       {isLoad ? 
         <Grid container spacing={3}>
           {/* 月の変更ボタン */}
           <Grid item md={12}>
-            <MonthChange year={year} month={month}/>
+            <MonthChange year={year} month={month} setYear={setYear} setMonth={setMonth} />
           </Grid>
           {/* 年度支出 */}
           <Grid item md={12}>

@@ -59,8 +59,10 @@ def get_summary():
    return jsonify(summary_data)
 
 
-@app.route("/dailyGetter")
+@app.route("/dailyGetter", methods=['GET', 'POST'])
 def get_daily():
+   month_year_data = request.get_json()
+   print(month_year_data)
    daily_data = defaultdict(list)
    month = str(now.month).zfill(2)
    
