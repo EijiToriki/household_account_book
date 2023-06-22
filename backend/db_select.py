@@ -101,14 +101,16 @@ def select_category_all():
 
 # あるカテゴリの合計支出（月別）
 ## 変動費、固定費共に使う
-def select_out_sum_category(month, category, id):
+def select_out_sum_category(year, month, category, id):
+  year = str(year)
+  
   conn = connect_db()
   ## sqliteを操作するカーソルオブジェクトを作成
   cur = conn.cursor()
 
   ## データ抽出
   res = cur.execute(
-    "select sum(money) from outcome where user_id = " + str(id) + " and strftime('%m', out_date) = '" + month + "' and category_id = " + str(category)
+    "select sum(money) from outcome where user_id = " + str(id) + " and strftime('%Y', out_date) = '" + year + "' and strftime('%m', out_date) = '" + month + "' and category_id = " + str(category)
   ).fetchall()
 
   conn.commit()
@@ -118,8 +120,8 @@ def select_out_sum_category(month, category, id):
 
 
 # ある月における日ごとの合計支出
-def select_out_day_category(month, category, id):
-  last_day = calendar.monthrange(2023, month)[1]
+def select_out_day_category(year, month, category, id):
+  last_day = calendar.monthrange(year, month)[1]
 
   conn = connect_db()
   ## sqliteを操作するカーソルオブジェクトを作成
@@ -127,7 +129,7 @@ def select_out_day_category(month, category, id):
 
   res_list = []
   for day in range(1, last_day+1):
-    date = "{0}-{1}-{2}".format(2023, str(month).zfill(2), str(day).zfill(2))
+    date = "{0}-{1}-{2}".format(year, str(month).zfill(2), str(day).zfill(2))
     ## データ抽出
     res = cur.execute(
       "select sum(money) from outcome where user_id = " + str(id) + " and out_date = '" + date + "' and category_id = " + str(category)

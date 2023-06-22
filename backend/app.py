@@ -62,9 +62,9 @@ def get_summary():
 @app.route("/dailyGetter", methods=['GET', 'POST'])
 def get_daily():
    month_year_data = request.get_json()
-   print(month_year_data)
    daily_data = defaultdict(list)
-   month = str(now.month).zfill(2)
+   month = str(month_year_data['m']).zfill(2)
+   year = int(month_year_data['y'])
    
    out = select_month_outcome(month, 1)
    category = select_category_all()
@@ -87,7 +87,7 @@ def get_daily():
    fixed_response = []
    fixed_ids = [0, 7, 8, 9, 10, 11]
    for cid in fixed_ids:
-      res = select_out_sum_category(month, cid+1, 1)
+      res = select_out_sum_category(year, month, cid+1, 1)
       if res[0][0]:
          fixed_response.append((category[cid][0], res[0][0]))
       else:
@@ -99,8 +99,8 @@ def get_daily():
    variable_response = []
    variable_ids = [1, 2, 3, 4, 5, 6, 12]
    for cid in variable_ids:
-      res = select_out_sum_category(month, cid+1, 1)
-      day_res = select_out_day_category(now.month, cid+1, 1)
+      res = select_out_sum_category(year, month, cid+1, 1)
+      day_res = select_out_day_category(year, month_year_data['m'], cid+1, 1)
       if res[0][0]:
          variable_response.append((category[cid][0], res[0][0], day_res))
       else:
