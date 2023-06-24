@@ -3,7 +3,7 @@ import Paper from '@mui/material/Paper';
 import { DatePicker } from '@mui/x-date-pickers'
 import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 
-import Title from './Title'
+import Title from '../Title'
 
 
 export default function Details({formChar, detailCount, data, type}) {

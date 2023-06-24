@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import Grid from '@mui/material/Grid';
 
-import Details from './subcomponents/Details';
-import DetailOpButton from './subcomponents/DetailOpButton';
+import Details from './subcomponents/registrationComponents/Details'
+import DetailOpButton from './subcomponents/registrationComponents/DetailOpButton';
 import { useNavigate } from 'react-router-dom';
 
 export default function IncomeRegistration() {
