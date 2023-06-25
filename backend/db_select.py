@@ -1,5 +1,4 @@
 import sqlite3
-import datetime
 import calendar
 
 def connect_db():
@@ -45,6 +44,25 @@ def select_month_bop(month, type, id):
   conn.close
 
   return res[0][0]
+
+
+# year で与えた年の月ごとの収支を返す
+def select_year_groupby_month(year, type, id):
+  conn = connect_db()
+  ## sqliteを操作するカーソルオブジェクトを作成
+  cur = conn.cursor()
+
+  ## データ抽出
+  res = cur.execute(
+    "select "+ type + "_date, money from "+ type + "come where user_id = " + str(id) + " and strftime('%Y', "+ type + "_date) = '" + str(year) + "'" 
+  ).fetchall()
+
+  conn.commit()
+  conn.close
+
+
+
+  return res
 
 
 # monthで与えた月におけるカテゴリごとの支出額の合計値を出力する
@@ -147,46 +165,11 @@ def select_out_day_category(year, month, category, id):
 
 
 
+from collections import defaultdict
 if __name__ == '__main__':
-  # print(select_year_bop('2023', 'in'))
-  # print(select_month_bop('06', 'in'))
-  out = select_month_outcome('06', 1)
-  category = select_category_all()
+  res = select_year_groupby_month(2023, 'in', 1)
+  month_sum = defaultdict(int)
+  for el in res:
+    month_sum[el[0].split('-')[1]] += el[1]
 
-  blank_category = []
-  out_category = set([o[0] for o in out])
-
-  for i in range(len(category)):
-    if i+1 not in out_category:
-      blank_category.append(i+1)
-
-  for bc in blank_category:
-    out.insert(bc-1, (bc, 0))
-
-  budget_summary = []
-  for i in range(len(category)):
-    budget_summary.append([category[i][0], out[i][1]])
-
-  ## 固定費
-  fixed_response = []
-  fixed_ids = [0, 7, 8, 9, 10, 11]
-  for cid in fixed_ids:
-    res = select_out_sum_category('06', cid+1, 1)
-    if res[0][0] != 'null':
-      fixed_response.append((category[cid][0], res[0][0]))
-    else:
-      fixed_response.append((category[cid][0], 0))
-
-  print(fixed_response)
-  ## 変動費
-  variable_response = []
-  variable_ids = [1, 2, 3, 4, 5, 6, 12]
-  for cid in variable_ids:
-    res = select_out_sum_category('06', cid+1, 1)
-    day_res = select_out_day_category(6, cid+1, 1)
-    if res[0][0]:
-      variable_response.append((category[cid][0], res[0][0], day_res))
-    else:
-      variable_response.append((category[cid][0], 0, day_res))
-
-  print(variable_response)
+  print(month_sum)

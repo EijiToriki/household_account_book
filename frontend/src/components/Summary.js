@@ -9,6 +9,7 @@ import MonthDetail from './subcomponents/summaryComponents/MonthDetail';
 
 
 const baseURL = "http://127.0.0.1:5000/summaryGetter"
+const now = new Date()
 export default function Summary() {
   const [summaryData, setSummaryData] = React.useState({})
   const [isLoad, setIsLoad] = React.useState(false)
@@ -36,7 +37,7 @@ export default function Summary() {
                 height: 240,
               }}
             >
-              <YearAccount income={summaryData.year[0]} outcome={summaryData.year[1]} />
+              <YearAccount income={summaryData.year[0]} outcome={summaryData.year[1]} year={now.getFullYear()} />
             </Paper>
           </Grid>
           {/* 月支出 */}
@@ -49,13 +50,13 @@ export default function Summary() {
                 height: 240,
               }}
             >
-              <MonthAccount income={summaryData.month[0]} outcome={summaryData.month[1]} />
+              <MonthAccount income={summaryData.month[0]} outcome={summaryData.month[1]} month={now.getMonth()+1} />
             </Paper>
           </Grid>
           {/* 目標との差額 */}
           <Grid item md={12}>
             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-              <MonthDetail budgetData={summaryData.budget} />
+              <MonthDetail budgetData={summaryData.budget} month={now.getMonth()+1} />
             </Paper>
           </Grid>
         </Grid> 

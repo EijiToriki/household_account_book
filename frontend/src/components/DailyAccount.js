@@ -15,7 +15,7 @@ export default function DailyAccount() {
   const [month, setMonth] = React.useState(now.getMonth()+1)
 
   React.useEffect(() => {
-    async function fetchSummary(){
+    async function fetchDaily(){
       try{
         const res = await axios.post(baseURL, {
           m : month,
@@ -27,7 +27,7 @@ export default function DailyAccount() {
         console.log(error)
       } 
     }
-    fetchSummary()
+    fetchDaily()
   }, [month])
   return (
     <>

@@ -2,10 +2,10 @@ import React from 'react'
 import Title from '../Title'
 import { Grid, Typography } from '@mui/material'
 
-export default function YearAccount({income, outcome}) {
+export default function YearAccount({income, outcome, year}) {
   return (
     <>
-      <Title>2023年 収支</Title>
+      <Title>{year}年 収支</Title>
       <Grid container spacing={3}>
         <Grid item md={6}>
           <Typography ml={3} fontSize={20}>

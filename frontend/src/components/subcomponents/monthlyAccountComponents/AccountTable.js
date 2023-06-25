@@ -1,43 +1,44 @@
 import * as React from 'react';
-import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Title from '../Title';
 import { Typography } from '@mui/material';
 
-export default function MonthDetail({budgetData, month}) {
+import Title from '../Title';
+
+
+export default function AccountTable({year, monthlyData}) {
   return (
     <React.Fragment>
-      <Title>{month}月 カテゴリ別支出</Title>
+      <Title>{year}年 収支表</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell><Typography fontSize={20}>カテゴリ</Typography></TableCell>
-            <TableCell align="right"><Typography fontSize={20}>支出額</Typography></TableCell>
-            <TableCell align="right"><Typography fontSize={20}>目標</Typography></TableCell>
+            <TableCell><Typography fontSize={20}>月</Typography></TableCell>
+            <TableCell align="right"><Typography fontSize={20}>収入</Typography></TableCell>
+            <TableCell align="right"><Typography fontSize={20}>支出</Typography></TableCell>
             <TableCell align="right"><Typography fontSize={20}>差額</Typography></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {budgetData.map((data, idx) => (
+          {monthlyData['in'].map((in_data, idx) => (
             <TableRow key={idx}>
-              <TableCell><Typography>{data[0]}</Typography></TableCell>
-              <TableCell align="right"><Typography>{`${data[1]}円`}</Typography></TableCell>
-              <TableCell align="right"><Typography>{`${data[2]}円`}</Typography></TableCell>
+              <TableCell><Typography>{in_data[0]}</Typography></TableCell>
+              <TableCell align="right"><Typography>{`${in_data[1]}円`}</Typography></TableCell>
+              <TableCell align="right"><Typography>{`${monthlyData['out'][idx][1]}円`}</Typography></TableCell>
               {
-                data[2] - data[1] > 0 ?
+                in_data[1] - monthlyData['out'][idx][1] >= 0 ?
                 <TableCell align="right">
                   <Typography color='green'>
-                    {`${data[2] - data[1]}円 余裕`}
+                    {`${in_data[1] - monthlyData['out'][idx][1]}円 余裕`}
                   </Typography>
                 </TableCell>
                 :
                 <TableCell align="right">
                   <Typography color='error'>
-                    {`${data[1] - data[2]}円 超過`}
+                    {`${monthlyData['out'][idx][1] - in_data[1]}円 超過`}
                   </Typography>
                 </TableCell>
               }
@@ -45,9 +46,6 @@ export default function MonthDetail({budgetData, month}) {
           ))}
         </TableBody>
       </Table>
-      <Link color="primary" href="Month" sx={{ mt: 3 }}>
-        他の月の支出を確認する
-      </Link>
     </React.Fragment>
-  );
+  )
 }

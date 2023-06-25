@@ -4,7 +4,7 @@ from collections import defaultdict
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from db_insert import insert_XXcome
-from db_select import select_year_bop, select_month_bop, select_month_outcome, select_budget_by_user, select_category_all, select_out_day_category, select_out_sum_category
+from db_select import select_year_bop, select_month_bop, select_month_outcome, select_budget_by_user, select_category_all, select_out_day_category, select_out_sum_category, select_year_groupby_month
 
 app = Flask(__name__)
 CORS(app)
@@ -57,6 +57,38 @@ def get_summary():
    summary_data['budget'] = summary_budget
    
    return jsonify(summary_data)
+
+
+@app.route("/monthlyGetter", methods=['GET', 'POST'])
+def get_monthly():
+   year = request.get_json()
+   year = year['y']
+
+   ## その年における各月の収支
+   monthly_data = defaultdict(dict)
+   
+   in_res = select_year_groupby_month(year, 'in', 1)
+   month_sum_in = defaultdict(int)
+   for el in in_res:
+      month_sum_in[el[0].split('-')[1]] += el[1]
+   for i in range(1, 13):
+      if str(i).zfill(2) not in month_sum_in.keys():
+         month_sum_in[str(i).zfill(2)] = 0
+   month_sum_in = sorted(month_sum_in.items())
+
+   out_res = select_year_groupby_month(year, 'out', 1)
+   month_sum_out = defaultdict(int)
+   for el in out_res:
+      month_sum_out[el[0].split('-')[1]] += el[1]
+   for i in range(1, 13):
+      if str(i).zfill(2) not in month_sum_out.keys():
+         month_sum_out[str(i).zfill(2)] = 0
+   month_sum_out = sorted(month_sum_out.items())
+
+   monthly_data['in'] = month_sum_in
+   monthly_data['out'] = month_sum_out
+
+   return jsonify(monthly_data)
 
 
 @app.route("/dailyGetter", methods=['GET', 'POST'])
