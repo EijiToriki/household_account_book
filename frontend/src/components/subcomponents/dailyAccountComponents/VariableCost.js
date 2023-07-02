@@ -1,17 +1,65 @@
 import React from 'react'
+import axios from 'axios'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Box, Button, Grid, Modal, TextField, Typography } from '@mui/material';
 
 import Title from '../Title'
+import { useNavigate } from 'react-router-dom';
+
+const idxMap = {
+  0: 2,
+  1: 3,
+  2: 4,
+  3: 5,
+  4: 6,
+  5: 7,
+  6: 13,
+}
 
 export default function VariableCost({variableData}) {
+  const navigate = useNavigate()
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [updateIdx, setUpdateIdx] = React.useState(0)
+  const [updateDate, setUpdateDate] = React.useState('')
+  const [updateMoney, setUpdateMoney] = React.useState(0)
+  
+  const handleOpen = (idx, date, val) => {
+    setOpen(true);
+    setUpdateDate(date)
+    setUpdateIdx(idx)
+    setUpdateMoney(val)
+  }
+  const handleClose = () => {
+    setOpen(false);
+  }
+  const changeMoney = (e) => {
+    setUpdateMoney(e.target.value)
+  }
+
+  const updateTable = () => {
+    setOpen(false)
+
+    const baseURL = "http://127.0.0.1:5000/variableUpdator"
+    const postData = {
+      'category': idxMap[updateIdx],
+      'date': updateDate,
+      'money': updateMoney
+    }
+
+    async function postUpdateMoney(){
+      try{
+        await axios.post(baseURL, postData)
+      }catch(error){
+        console.log(error)
+      } 
+    }
+    postUpdateMoney()
+    navigate('/daily')
+  }
 
   return (
     <React.Fragment>
@@ -31,7 +79,7 @@ export default function VariableCost({variableData}) {
               <TableCell><Typography>{colData[0]}</Typography></TableCell>
             {variableData.map((rowData, rowIdx) => (
               <TableCell key={rowIdx}>
-                <Button onClick={handleOpen} variant='text'>
+                <Button onClick={() => handleOpen(rowIdx, colData[0], rowData[2][colIdx][1])} variant='text'>
                   <Typography>
                     {rowData[2][colIdx][1]}円
                   </Typography>
@@ -50,9 +98,19 @@ export default function VariableCost({variableData}) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4}}>
-          <Typography>
-            ここに更新用情報を記載
+          <Typography sx={{ marginBottom: 2 }}>
+            更新後の金額を入力
           </Typography>
+          <Grid container spacing={3} alignItems='center'>
+            <Grid item md={8}>
+              <TextField id="update-money" type='number' label={updateMoney} variant='outlined' onChange={changeMoney} />
+            </Grid>
+            <Grid item md={4}>
+              <Button variant='contained' color='error' onClick={() => updateTable()}>
+                更新
+              </Button>
+            </Grid>
+          </Grid>
         </Box>
       </Modal>
     </React.Fragment>

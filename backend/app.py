@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from db_insert import insert_XXcome
 from db_select import select_year_bop, select_month_bop, select_month_outcome, select_budget_by_user, select_category_all, select_out_day_category, select_out_sum_category, select_year_groupby_month
+from db_update import update_daily_table
 
 app = Flask(__name__)
 CORS(app)
@@ -142,6 +143,13 @@ def get_daily():
 
    return jsonify(daily_data)
 
+
+@app.route("/variableUpdator", methods=['GET', 'POST'])
+def variable_updator():
+   data = request.get_json()
+   update_daily_table(id=1, money=data['money'], category=data['category'], date=data['date'])
+
+   return data
 
 @app.route("/incomeRegister", methods=['GET', 'POST'])
 def income_register():
