@@ -3,8 +3,8 @@ from collections import defaultdict
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from db_insert import insert_XXcome
-from db_select import select_year_bop, select_month_bop, select_month_outcome, select_budget_by_user, select_category_all, select_out_day_category, select_out_sum_category, select_year_groupby_month
+from db_insert import insert_XXcome, insert_user
+from db_select import select_year_bop, select_month_bop, select_month_outcome, select_budget_by_user, select_category_all, select_out_day_category, select_out_sum_category, select_year_groupby_month, select_user
 from db_update import update_daily_table
 
 app = Flask(__name__)
@@ -165,6 +165,21 @@ def outcome_register():
    insert_XXcome(data, 'out')
 
    return data
+
+
+@app.route("/userSignUp", methods=['GET', 'POST'])
+def userSignUp():
+   data = request.get_json()
+   name, password = data['name'], data['password']
+
+   result = {}
+   if select_user(name) == 0:
+      insert_user(name, password)
+      result['result'] = 0
+   else:
+      result['result'] = 1
+
+   return jsonify(result)
 
 
 if __name__ == '__main__':

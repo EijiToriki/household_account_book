@@ -1,4 +1,5 @@
 import sqlite3
+from DB.hash_password import get_digest
 
 def connect_db():
   ## DB接続
@@ -26,6 +27,27 @@ def insert_XXcome(data, type):
           "money": data["money"], 
           "category_id": data["category"], 
           "comment": data["comment"]
+        }
+  )
+
+  conn.commit()
+  conn.close
+
+
+def insert_user(name, password):
+  conn = connect_db()
+  ## sqliteを操作するカーソルオブジェクトを作成
+  cur = conn.cursor()
+
+
+  password = get_digest(password)
+  print(name)
+  ## データ挿入
+  cur.execute(
+      'insert into user (user_name, password) values(:name, :password)'
+      , {
+          "name": name,
+          "password": password
         }
   )
 

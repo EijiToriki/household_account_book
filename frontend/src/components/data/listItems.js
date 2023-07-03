@@ -15,7 +15,7 @@ export const mainListItems = (
       View
     </ListSubheader>
 
-    <Link href="/" underline='none' color='black'>
+    <Link href="/summary" underline='none' color='black'>
       <ListItemButton>
         <ListItemIcon>
           <DashboardIcon />

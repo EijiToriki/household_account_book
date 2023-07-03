@@ -164,12 +164,21 @@ def select_out_day_category(year, month, category, id):
   return res_list
 
 
+# ユーザ名検索
+def select_user(name):
+  conn = connect_db()
+  ## sqliteを操作するカーソルオブジェクトを作成
+  cur = conn.cursor()
 
-from collections import defaultdict
+  res = cur.execute(
+    "select count(*) from user where user_name = '" + name + "'"
+  ).fetchall()
+
+  conn.commit()
+  conn.close
+
+  return res[0][0]
+
+
 if __name__ == '__main__':
-  res = select_year_groupby_month(2023, 'in', 1)
-  month_sum = defaultdict(int)
-  for el in res:
-    month_sum[el[0].split('-')[1]] += el[1]
-
-  print(month_sum)
+  print(select_user('mizuki'))

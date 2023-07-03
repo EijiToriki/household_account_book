@@ -17,6 +17,8 @@ import MonthlyAccount from './components/MonthlyAccount';
 import DailyAccount from './components/DailyAccount';
 import IncomeRegistration from './components/IncomeRegistration'
 import OutcomeRegistration from './components/OutcomeRegistration'
+import Login from './components/Login';
+import SignUp from './components/SignUp';
 
 
 function Copyright(props) {
@@ -60,7 +62,13 @@ function App() {
 
                 {/* ここにルーティングを設定する */}
                 <Routes>
-                  <Route exact path="/" element={<Summary />} />
+                  <Route exact path="/" element={<Login />} />
+                </Routes>
+                <Routes>
+                  <Route exact path="/signup" element={<SignUp />} />
+                </Routes>
+                <Routes>
+                  <Route exact path="/summary" element={<Summary />} />
                 </Routes>
                 <Routes>
                   <Route exact path="/month" element={<MonthlyAccount />} />
