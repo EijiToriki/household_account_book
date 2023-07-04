@@ -6,6 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import Alert from '@mui/material/Alert';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -13,10 +14,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const [signupState, setSignUpState] = React.useState(0)
+  const navigate = useNavigate()
+
   const handleSubmit = (event) => {
     const baseURL = "http://127.0.0.1:5000/userSignUp"
     event.preventDefault();
@@ -28,7 +33,11 @@ export default function SignUp() {
     async function postUser(){
       try{
         const res = await axios.post(baseURL, postData)
-        console.log(res.data)
+        if(res.data.result === -1){
+          setSignUpState(-1)
+        }else{
+          navigate('/summary')
+        }
       }catch(error){
         console.log(error)
       } 
@@ -38,6 +47,10 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      {
+        signupState === -1 ?
+        <Alert severity="warning" onClose={() => setSignUpState(0)}>入力したユーザ名が既に使われています</Alert>:""
+      }
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

@@ -4,7 +4,7 @@ from collections import defaultdict
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from db_insert import insert_XXcome, insert_user
-from db_select import select_year_bop, select_month_bop, select_month_outcome, select_budget_by_user, select_category_all, select_out_day_category, select_out_sum_category, select_year_groupby_month, select_user
+from db_select import select_year_bop, select_month_bop, select_month_outcome, select_budget_by_user, select_category_all, select_out_day_category, select_out_sum_category, select_year_groupby_month, select_user, select_user_auth
 from db_update import update_daily_table
 
 app = Flask(__name__)
@@ -175,9 +175,20 @@ def userSignUp():
    result = {}
    if select_user(name) == 0:
       insert_user(name, password)
-      result['result'] = 0
+      result['result'] = select_user_auth(name, password)
    else:
-      result['result'] = 1
+      result['result'] = -1
+
+   return jsonify(result)
+
+
+@app.route("/userLogin", methods=['GET', 'POST'])
+def userLogin():
+   data = request.get_json()
+   name, password = data['name'], data['password']
+
+   result = {}
+   result['result'] = select_user_auth(name, password)
 
    return jsonify(result)
 

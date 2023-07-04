@@ -1,5 +1,6 @@
 import sqlite3
 import calendar
+from DB.hash_password import get_digest
 
 def connect_db():
   ## DB接続
@@ -180,5 +181,27 @@ def select_user(name):
   return res[0][0]
 
 
+# ユーザ名とパスワード検索
+def select_user_auth(name, password):
+  conn = connect_db()
+  ## sqliteを操作するカーソルオブジェクトを作成
+  cur = conn.cursor()
+
+  password = get_digest(password)
+
+  res = cur.execute(
+    "select id from user where user_name = '" + name + "' and password = '" + password + "'"
+  ).fetchall()
+
+  conn.commit()
+  conn.close
+
+  if len(res) == 0:
+    res = -1
+  else:
+    res = res[0][0]
+
+  return res
+
 if __name__ == '__main__':
-  print(select_user('mizuki'))
+  print(select_user_auth('yamashita', 'mizuki'))

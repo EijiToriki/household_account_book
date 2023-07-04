@@ -19,7 +19,7 @@ export default function YearChange({year, setYear}) {
             size='large'  
             onClick={() => handlePreYear()}
         >
-          前月へ
+          前年へ
         </Button>
       </Grid>
       <Grid item md={4}>
@@ -33,7 +33,7 @@ export default function YearChange({year, setYear}) {
             size='large' 
             onClick={() => handleNextYear()}
         >
-          次月へ
+          次年へ
         </Button>
       </Grid>
     </Grid>
