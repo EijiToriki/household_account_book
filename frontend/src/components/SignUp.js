@@ -18,8 +18,7 @@ import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
-  const [signupState, setSignUpState] = React.useState(0)
+export default function SignUp({userId, setUserId}) {
   const navigate = useNavigate()
 
   const handleSubmit = (event) => {
@@ -34,7 +33,7 @@ export default function SignUp() {
       try{
         const res = await axios.post(baseURL, postData)
         if(res.data.result === -1){
-          setSignUpState(-1)
+          setUserId(-1)
         }else{
           navigate('/summary')
         }
@@ -48,8 +47,8 @@ export default function SignUp() {
   return (
     <ThemeProvider theme={defaultTheme}>
       {
-        signupState === -1 ?
-        <Alert severity="warning" onClose={() => setSignUpState(0)}>入力したユーザ名が既に使われています</Alert>:""
+        userId === -1 ?
+        <Alert severity="warning" onClose={() => setUserId(0)}>入力したユーザ名が既に使われています</Alert>:""
       }
       <Container component="main" maxWidth="xs">
         <CssBaseline />

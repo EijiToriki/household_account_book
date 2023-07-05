@@ -6,7 +6,7 @@ import Details from './subcomponents/registrationComponents/Details';
 import DetailOpButton from './subcomponents/registrationComponents/DetailOpButton';
 import { useNavigate } from 'react-router-dom';
 
-export default function OutcomeRegistration() {
+export default function OutcomeRegistration({userId}) {
   const navigate = useNavigate()
 
   const handleAddDetails = () => {
@@ -23,12 +23,15 @@ export default function OutcomeRegistration() {
     let baseURL = "http://127.0.0.1:5000/outcomeRegister"
     details.map((detail) => {
       try{
-        axios.post(baseURL, detail)
+        axios.post(baseURL, {
+          "id": userId,
+          "detail": detail
+        })
       }catch(error){
         console.log(error)
       } 
     })
-    navigate('/')
+    navigate('/summary')
   }
 
   const handleRemoveDetails = () => {

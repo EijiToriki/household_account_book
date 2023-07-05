@@ -8,7 +8,7 @@ import AccountTable from './subcomponents/monthlyAccountComponents/AccountTable'
 
 const baseURL = "http://127.0.0.1:5000/monthlyGetter"
 const now = new Date()
-export default function MonthlyAccount() {
+export default function MonthlyAccount({userId}) {
   const [isLoad, setIsLoad] = React.useState(false)
   const [monthlyData, setMonthlyData] = React.useState({})
   const [year, setYear] = React.useState(now.getFullYear())
@@ -17,6 +17,7 @@ export default function MonthlyAccount() {
     async function fetchMonthly(){
       try{
         const res = await axios.post(baseURL, {
+          id : userId,
           y : year
         })
         setMonthlyData(res.data)

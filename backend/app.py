@@ -18,28 +18,44 @@ def after_request(response):
   return response
 
 now = datetime.datetime.now()
+id = 0
 
-@app.route("/summaryGetter")
+@app.route("/postId", methods=['GET', 'POST'])
+def set_userId():
+   res = request.get_json()
+   id = res['id']
+   print(id)
+
+   result = {}
+   result['id'] = id
+
+   return jsonify(result)
+
+
+@app.route("/summaryGetter", methods=['GET', 'POST'])
 def get_summary():
+   res = request.get_json()
+   id = res['id']
+   print(id)
    summary_data = defaultdict(list)
    year = str(now.year)
    month = str(now.month).zfill(2)
 
    ## その年の収支
    year_data = []
-   year_data.append(select_year_bop(year, 'in', 1))
-   year_data.append(select_year_bop(year, 'out', 1))
+   year_data.append(select_year_bop(year, 'in', id))
+   year_data.append(select_year_bop(year, 'out', id))
    summary_data['year'] = year_data
 
    ## その月の収支
    month_data = []
-   month_data.append(select_month_bop(month, 'in', 1))
-   month_data.append(select_month_bop(month, 'out', 1))
+   month_data.append(select_month_bop(month, 'in', id))
+   month_data.append(select_month_bop(month, 'out', id))
    summary_data['month'] = month_data
 
    ## その月のカテゴリ別の収支
-   out = select_month_outcome(month, 1)
-   bud = select_budget_by_user(1)
+   out = select_month_outcome(month, id)
+   bud = select_budget_by_user(id)
    category = select_category_all()
 
    blank_category = []
@@ -63,12 +79,13 @@ def get_summary():
 @app.route("/monthlyGetter", methods=['GET', 'POST'])
 def get_monthly():
    year = request.get_json()
+   id = year['id']
    year = year['y']
-
+   
    ## その年における各月の収支
    monthly_data = defaultdict(dict)
    
-   in_res = select_year_groupby_month(year, 'in', 1)
+   in_res = select_year_groupby_month(year, 'in', id)
    month_sum_in = defaultdict(int)
    for el in in_res:
       month_sum_in[el[0].split('-')[1]] += el[1]
@@ -77,7 +94,7 @@ def get_monthly():
          month_sum_in[str(i).zfill(2)] = 0
    month_sum_in = sorted(month_sum_in.items())
 
-   out_res = select_year_groupby_month(year, 'out', 1)
+   out_res = select_year_groupby_month(year, 'out', id)
    month_sum_out = defaultdict(int)
    for el in out_res:
       month_sum_out[el[0].split('-')[1]] += el[1]
@@ -98,8 +115,9 @@ def get_daily():
    daily_data = defaultdict(list)
    month = str(month_year_data['m']).zfill(2)
    year = int(month_year_data['y'])
+   id = month_year_data['id']
    
-   out = select_month_outcome(month, 1)
+   out = select_month_outcome(month, id)
    category = select_category_all()
 
    blank_category = []
@@ -120,7 +138,7 @@ def get_daily():
    fixed_response = []
    fixed_ids = [0, 7, 8, 9, 10, 11]
    for cid in fixed_ids:
-      res = select_out_sum_category(year, month, cid+1, 1)
+      res = select_out_sum_category(year, month, cid+1, id)
       if res[0][0]:
          fixed_response.append((category[cid][0], res[0][0]))
       else:
@@ -132,8 +150,8 @@ def get_daily():
    variable_response = []
    variable_ids = [1, 2, 3, 4, 5, 6, 12]
    for cid in variable_ids:
-      res = select_out_sum_category(year, month, cid+1, 1)
-      day_res = select_out_day_category(year, month_year_data['m'], cid+1, 1)
+      res = select_out_sum_category(year, month, cid+1, id)
+      day_res = select_out_day_category(year, month_year_data['m'], cid+1, id)
       if res[0][0]:
          variable_response.append((category[cid][0], res[0][0], day_res))
       else:
@@ -147,14 +165,16 @@ def get_daily():
 @app.route("/variableUpdator", methods=['GET', 'POST'])
 def variable_updator():
    data = request.get_json()
-   update_daily_table(id=1, money=data['money'], category=data['category'], date=data['date'])
+   id = data['id']
+   data = data['postData']
+   update_daily_table(id, money=data['money'], category=data['category'], date=data['date'])
 
    return data
 
 @app.route("/incomeRegister", methods=['GET', 'POST'])
 def income_register():
    data = request.get_json()
-   insert_XXcome(data, 'in')
+   insert_XXcome(data['detail'], 'in', data['id'])
 
    return data
 
@@ -162,7 +182,7 @@ def income_register():
 @app.route("/outcomeRegister", methods=['GET', 'POST'])
 def outcome_register():
    data = request.get_json()
-   insert_XXcome(data, 'out')
+   insert_XXcome(data['detail'], 'out', data['id'])
 
    return data
 

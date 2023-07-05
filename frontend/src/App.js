@@ -37,6 +37,9 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 function App() {
+  const [userId, setUserId] = React.useState(1)
+  
+  console.log(userId)
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <BrowserRouter>
@@ -62,25 +65,25 @@ function App() {
 
                 {/* ここにルーティングを設定する */}
                 <Routes>
-                  <Route exact path="/" element={<Login />} />
+                  <Route exact path="/" element={<Login userId={userId} setUserId={setUserId} />} />
                 </Routes>
                 <Routes>
-                  <Route exact path="/signup" element={<SignUp />} />
+                  <Route exact path="/signup" element={<SignUp userId={userId} setUserId={setUserId} />} />
                 </Routes>
                 <Routes>
-                  <Route exact path="/summary" element={<Summary />} />
+                  <Route exact path="/summary" element={<Summary userId={userId} />} />
                 </Routes>
                 <Routes>
-                  <Route exact path="/month" element={<MonthlyAccount />} />
+                  <Route exact path="/month" element={<MonthlyAccount userId={userId} />} />
                 </Routes>
                 <Routes>
-                  <Route exact path="/daily" element={<DailyAccount />} />
+                  <Route exact path="/daily" element={<DailyAccount userId={userId} />} />
                 </Routes>
                 <Routes>
-                  <Route exact path="/income" element={<IncomeRegistration />} />
+                  <Route exact path="/income" element={<IncomeRegistration userId={userId} />} />
                 </Routes>
                 <Routes>
-                  <Route exact path="/outcome" element={<OutcomeRegistration />} />
+                  <Route exact path="/outcome" element={<OutcomeRegistration userId={userId} />} />
                 </Routes>
                 {/* -------------------------- */}
               </Container>

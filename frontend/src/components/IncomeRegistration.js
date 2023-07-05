@@ -6,7 +6,7 @@ import Details from './subcomponents/registrationComponents/Details'
 import DetailOpButton from './subcomponents/registrationComponents/DetailOpButton';
 import { useNavigate } from 'react-router-dom';
 
-export default function IncomeRegistration() {
+export default function IncomeRegistration({userId}) {
   const navigate = useNavigate()
 
   const handleAddDetails = () => {
@@ -23,12 +23,15 @@ export default function IncomeRegistration() {
     let baseURL = "http://127.0.0.1:5000/incomeRegister"
     details.map((detail) => {
       try{
-        axios.post(baseURL, detail)
+        axios.post(baseURL, {
+          "id": userId,
+          "detail": detail
+        })
       }catch(error){
         console.log(error)
       } 
     })
-    navigate('/')
+    navigate('/summary')
   }
 
   const handleRemoveDetails = () => {

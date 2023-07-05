@@ -18,8 +18,7 @@ import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
-export default function Login() {
-  const [userId, setUserId] = React.useState(0)
+export default function Login({userId, setUserId}) {
   const navigate = useNavigate()
 
   const handleSubmit = (event) => {

@@ -10,13 +10,15 @@ import MonthDetail from './subcomponents/summaryComponents/MonthDetail';
 
 const baseURL = "http://127.0.0.1:5000/summaryGetter"
 const now = new Date()
-export default function Summary() {
+export default function Summary({userId}) {
   const [summaryData, setSummaryData] = React.useState({})
   const [isLoad, setIsLoad] = React.useState(false)
 
   React.useEffect(() => {
     async function fetchSummary(){
-      const res = await axios.get(baseURL)
+      const res = await axios.post(baseURL, {
+        "id" : userId
+      })
       setSummaryData(res.data)
       setIsLoad(true)
     }

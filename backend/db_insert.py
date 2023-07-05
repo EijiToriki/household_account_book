@@ -9,7 +9,7 @@ def connect_db():
   return conn
 
 
-def insert_XXcome(data, type):
+def insert_XXcome(data, type, id):
   conn = connect_db()
   ## sqliteを操作するカーソルオブジェクトを作成
   cur = conn.cursor()
@@ -21,8 +21,9 @@ def insert_XXcome(data, type):
 
   ## データ挿入
   cur.execute(
-      'insert into ' + table_name + '(user_id, ' + table_date_name + ', money, category_id, comment) values(1, :' + table_date_name + ', :money, :category_id, :comment)'
+      'insert into ' + table_name + '(user_id, ' + table_date_name + ', money, category_id, comment) values(:id, :' + table_date_name + ', :money, :category_id, :comment)'
       , {
+          "id": id,
           table_date_name: data["registerDate"], 
           "money": data["money"], 
           "category_id": data["category"], 

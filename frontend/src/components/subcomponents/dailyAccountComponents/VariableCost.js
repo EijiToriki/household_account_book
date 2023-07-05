@@ -20,7 +20,7 @@ const idxMap = {
   6: 13,
 }
 
-export default function VariableCost({variableData}) {
+export default function VariableCost({variableData, userId}) {
   const navigate = useNavigate()
   const [open, setOpen] = React.useState(false);
   const [updateIdx, setUpdateIdx] = React.useState(0)
@@ -52,7 +52,10 @@ export default function VariableCost({variableData}) {
 
     async function postUpdateMoney(){
       try{
-        await axios.post(baseURL, postData)
+        await axios.post(baseURL, {
+          'id': userId,
+          'postData': postData
+        })
       }catch(error){
         console.log(error)
       } 

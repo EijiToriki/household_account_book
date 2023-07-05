@@ -8,7 +8,7 @@ import VariableCost from './subcomponents/dailyAccountComponents/VariableCost';
 
 const baseURL = "http://127.0.0.1:5000/dailyGetter"
 const now = new Date()
-export default function DailyAccount() {
+export default function DailyAccount({userId}) {
   const [dailyData, setDailyData] = React.useState({})
   const [isLoad, setIsLoad] = React.useState(false)
   const [year, setYear] = React.useState(now.getFullYear())
@@ -18,6 +18,7 @@ export default function DailyAccount() {
     async function fetchDaily(){
       try{
         const res = await axios.post(baseURL, {
+          "id" : userId,
           m : month,
           y : year
         })
@@ -46,7 +47,7 @@ export default function DailyAccount() {
           {/* 目標との差額 */}
           <Grid item md={12}>
             <Paper sx={{ p: 4, display: 'flex', flexDirection: 'column' }}>
-              <VariableCost variableData={dailyData.variable} />
+              <VariableCost variableData={dailyData.variable} userId={userId} />
             </Paper>
           </Grid>
         </Grid> 
