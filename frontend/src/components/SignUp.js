@@ -32,9 +32,8 @@ export default function SignUp({userId, setUserId}) {
     async function postUser(){
       try{
         const res = await axios.post(baseURL, postData)
-        if(res.data.result === -1){
-          setUserId(-1)
-        }else{
+        setUserId(res.data.result)
+        if(res.data.result >= 1){
           navigate('/summary')
         }
       }catch(error){
