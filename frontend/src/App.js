@@ -37,9 +37,8 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 function App() {
-  const [userId, setUserId] = React.useState(1)
-  
-  console.log(userId)
+  const [userId, setUserId] = React.useState(localStorage.getItem('id') ? localStorage.getItem('id') : 0)
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <BrowserRouter>

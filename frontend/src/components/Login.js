@@ -32,8 +32,10 @@ export default function Login({userId, setUserId}) {
     async function postUser(){
       try{
         const res = await axios.post(baseURL, postData)
-        setUserId(res.data.result)
-        if(res.data.result >= 1){
+        const id = res.data.result
+        setUserId(id)
+        if(id >= 1){
+          localStorage.setItem('id', id)
           navigate('/summary')
         }
       }catch(error){
